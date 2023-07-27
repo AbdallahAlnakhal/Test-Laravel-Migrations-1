@@ -13,10 +13,12 @@ class UpdateUsersTable extends Migration
      */
     public function up()
     {
-        // TASK: add an if-statement in this file to NOT add column if it already exists
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('name');
-        });
+        // Add an if-statement to check if the "name" column already exists
+        if (!Schema::hasColumn('users', 'name')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('name');
+            });
+        }
     }
 
     /**
@@ -26,6 +28,11 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
-        //
+        // To reverse the migration, you can remove the "name" column if it exists.
+        if (Schema::hasColumn('users', 'name')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('name');
+            });
+        }
     }
 }
